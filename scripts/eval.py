@@ -48,7 +48,7 @@ def main(eval_args: EvalArgs):
         initial_conditions_file=eval_args.initial_conditions_file,
         rollouts=eval_args.rollouts,
     )
-    rollouts = len(initial_conditions)
+    rollouts = eval_args.rollouts
     # Resume CSV logging
     run_folder = Path(eval_args.run_folder)
     run_folder.mkdir(parents=True, exist_ok=True)
