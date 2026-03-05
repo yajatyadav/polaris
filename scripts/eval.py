@@ -1,3 +1,12 @@
+# Optional: limit GPU memory for this process (e.g. when sharing GPU with policy server).
+# Must run before any CUDA allocation.
+import os
+if "POLARIS_CUDA_MEMORY_FRACTION" in os.environ:
+    import torch
+    torch.cuda.set_per_process_memory_fraction(
+        float(os.environ["POLARIS_CUDA_MEMORY_FRACTION"])
+    )
+
 import tyro
 import mediapy
 
@@ -48,7 +57,7 @@ def main(eval_args: EvalArgs):
         initial_conditions_file=eval_args.initial_conditions_file,
         rollouts=eval_args.rollouts,
     )
-    rollouts = eval_args.rollouts
+    rollouts = eval_args.rollouts if eval_args.rollouts is not None else len(initial_conditions)
     # Resume CSV logging
     run_folder = Path(eval_args.run_folder)
     run_folder.mkdir(parents=True, exist_ok=True)

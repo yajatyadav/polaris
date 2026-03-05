@@ -1,6 +1,6 @@
 # Custom
 data/
-runs/
+*.mp4
 PolaRiS-Hub/
 PolaRiS-datasets/
 

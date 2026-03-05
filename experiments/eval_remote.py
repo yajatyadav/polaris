@@ -23,7 +23,6 @@ Usage:
 from __future__ import annotations
 
 import subprocess
-import sys
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -107,7 +106,7 @@ def main() -> None:
     exp = tyro.cli(ExperimentArgs)
     jobs = build_eval_jobs(exp)
 
-    eval_script = str(Path(__file__).resolve().parent.parent / "scripts" / "eval.py")
+    eval_script = "scripts/eval.py"
 
     print(f"╔══ Evaluation sweep: {len(jobs)} job(s) ══")
     print(f"║ Policy server : {exp.host}:{exp.port}")
@@ -122,7 +121,7 @@ def main() -> None:
     failures: list[str] = []
     for i, job in enumerate(jobs):
         cli_args = eval_args_to_cli(job)
-        cmd = [sys.executable, eval_script] + cli_args
+        cmd = ["uv", "run", "python", eval_script] + cli_args
 
         print(f"[{i + 1}/{len(jobs)}] {job.environment}")
         print(f"     run_folder: {job.run_folder}")
