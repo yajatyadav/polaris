@@ -1,0 +1,114 @@
+warning: Ignoring invalid `SSL_CERT_FILE`. Path does not exist: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem.
+warning: Ignoring invalid `SSL_CERT_DIR`. The directory does not exist.: /etc/pki/tls/certs.
+warning: The `tool.uv.dev-dependencies` field (used in `third_party/openpi/packages/openpi-client/pyproject.toml`) is deprecated and will be removed in a future release; use `dependency-groups.dev` instead
+warning: The `tool.uv.dev-dependencies` field (used in `packages/openpi-client/pyproject.toml`) is deprecated and will be removed in a future release; use `dependency-groups.dev` instead
+warning: `VIRTUAL_ENV=/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+warning: Ignoring invalid `SSL_CERT_FILE`. Path does not exist: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem.
+warning: Ignoring invalid `SSL_CERT_DIR`. The directory does not exist.: /etc/pki/tls/certs.
+INFO:2026-03-06 00:17:07,916:jax._src.xla_bridge:925: Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+INFO:jax._src.xla_bridge:Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+INFO:2026-03-06 00:17:08,205:jax._src.xla_bridge:925: Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+INFO:jax._src.xla_bridge:Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+INFO:absl:orbax-checkpoint version: 0.11.13
+INFO:absl:Created BasePyTreeCheckpointHandler: use_ocdbt=True, use_zarr3=False, pytree_metadata_options=PyTreeMetadataOptions(support_rich_types=False), array_metadata_store=<orbax.checkpoint._src.metadata.array_metadata_store.Store object at 0x14b7cfccd110>
+INFO:absl:Restoring checkpoint from /global/scratch/users/yajatyadav/.cache/openpi/openpi-assets/checkpoints/polaris/pi05_droid_jointpos_polaris/params.
+INFO:absl:[thread=MainThread] Failed to get flag value for EXPERIMENTAL_ORBAX_USE_DISTRIBUTED_PROCESS_ID.
+2026-03-06 00:17:27.413777: W external/xla/xla/tsl/framework/bfc_allocator.cc:501] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.25GiB (rounded to 2415919104)requested by op 
+2026-03-06 00:17:27.447571: W external/xla/xla/tsl/framework/bfc_allocator.cc:512] *****************______________________********************__________************___****************
+Traceback (most recent call last):
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/scripts/serve_classifier_guided_policy.py", line 78, in <module>
+    main(tyro.cli(Args))
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/scripts/serve_classifier_guided_policy.py", line 57, in main
+    policy = create_policy(args)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/scripts/serve_classifier_guided_policy.py", line 45, in create_policy
+    return _policy_config.create_classifier_guided_policy(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/src/openpi/policies/policy_config.py", line 114, in create_classifier_guided_policy
+    return _classifier_guided_policy.create_classifier_guided_policy(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/src/openpi/policies/classifier_guided_policy.py", line 248, in create_classifier_guided_policy
+    actor_model = _load_model_from_checkpoint(actor_train_config, actor_checkpoint_dir)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/src/openpi/policies/classifier_guided_policy.py", line 27, in _load_model_from_checkpoint
+    return train_config.model.load(_model.restore_params(checkpoint_dir / "params", dtype=jnp.bfloat16))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/src/openpi/models/model.py", line 318, in restore_params
+    params = ckptr.restore(
+             ^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/orbax/checkpoint/_src/checkpointers/checkpointer.py", line 300, in restore
+    restored = self._restore(directory, args=ckpt_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/orbax/checkpoint/_src/checkpointers/checkpointer.py", line 319, in _restore
+    return self._handler.restore(directory, args=args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/orbax/checkpoint/_src/handlers/pytree_checkpoint_handler.py", line 796, in restore
+    return self._handler_impl.restore(directory, args=args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/orbax/checkpoint/_src/handlers/base_pytree_checkpoint_handler.py", line 760, in restore
+    tree_memory_size, restored_item = asyncio_utils.run_sync(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/orbax/checkpoint/_src/asyncio_utils.py", line 50, in run_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+  File "/global/home/users/yajatyadav/.local/share/uv/python/cpython-3.11.15-linux-x86_64-gnu/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/global/home/users/yajatyadav/.local/share/uv/python/cpython-3.11.15-linux-x86_64-gnu/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/home/users/yajatyadav/.local/share/uv/python/cpython-3.11.15-linux-x86_64-gnu/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/orbax/checkpoint/_src/handlers/base_pytree_checkpoint_handler.py", line 584, in _maybe_deserialize
+    deserialized_batches += await asyncio.gather(*deserialized_batches_ops)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/orbax/checkpoint/_src/serialization/type_handlers.py", line 1314, in deserialize
+    *ret, array_metadatas = await asyncio.gather(*deserialize_ops)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/orbax/checkpoint/_src/serialization/serialization.py", line 544, in async_deserialize
+    return await read_and_create_array(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/orbax/checkpoint/_src/serialization/serialization.py", line 503, in read_and_create_array
+    dbs = sum(await asyncio.gather(*read_array_coros), [])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/orbax/checkpoint/_src/serialization/serialization.py", line 457, in _read_array_index_and_device_put
+    result.append(jax.device_put(shard, Layout(dll, sharding)))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/jax/_src/api.py", line 2376, in device_put
+    out_flat = dispatch.device_put_p.bind(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/jax/_src/core.py", line 502, in bind
+    return self._true_bind(*args, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/jax/_src/core.py", line 520, in _true_bind
+    return self.bind_with_trace(prev_trace, args, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/jax/_src/core.py", line 525, in bind_with_trace
+    return trace.process_primitive(self, args, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/jax/_src/core.py", line 1029, in process_primitive
+    return primitive.impl(*args, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/jax/_src/dispatch.py", line 566, in _batched_device_put_impl
+    shard_arg_results = pxla.shard_args(dsa_shardings, [None] * len(dsa_xs),
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/jax/_src/profiler.py", line 334, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/jax/_src/interpreters/pxla.py", line 134, in shard_args
+    return shard_arg_handlers[type(arg)]([arg], shardings, layouts,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/jax/_src/interpreters/pxla.py", line 216, in _shard_np_array
+    results.append(batched_device_put(aval, sharding, shards, devices))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/third_party/openpi/.venv/lib/python3.11/site-packages/jax/_src/interpreters/pxla.py", line 243, in batched_device_put
+    return xc.batched_device_put(aval, sharding, xs, list(devices), committed)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jaxlib.xla_extension.XlaRuntimeError: RESOURCE_EXHAUSTED: Out of memory while trying to allocate 2415919104 bytes.
+Traceback (most recent call last):
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/experiments/run_classifier_guided_job.py", line 302, in <module>
+    main()
+  File "/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/experiments/run_classifier_guided_job.py", line 260, in main
+    raise RuntimeError("Policy server did not become ready in time")
+RuntimeError: Policy server did not become ready in time

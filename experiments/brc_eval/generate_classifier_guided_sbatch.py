@@ -63,6 +63,12 @@ def generate_submission_script(args):
     lines.append(f'RUN_ROOT="{run_root}"')
     lines.append("")
 
+    # Container setup
+    container_path = args.container
+    if container_path:
+        lines.append(f'CONTAINER="{container_path}"')
+        lines.append("")
+
     if not args.run_local:
         log_dir = os.path.join(run_root, "slurm_logs")
         os.makedirs(log_dir, exist_ok=True)
@@ -94,15 +100,16 @@ def generate_submission_script(args):
 
     worker_script_rel = "experiments/run_classifier_guided_job.py"
 
-    num_chunks = math.ceil(len(ALL_POLARIS_ENVS) / args.num_evals_per_job)
+    envs_to_use = args.envs if args.envs is not None else ALL_POLARIS_ENVS
+    num_chunks = math.ceil(len(envs_to_use) / args.num_evals_per_job)
     env_chunks = [
-        ALL_POLARIS_ENVS[i : i + args.num_evals_per_job]
-        for i in range(0, len(ALL_POLARIS_ENVS), args.num_evals_per_job)
+        envs_to_use[i : i + args.num_evals_per_job]
+        for i in range(0, len(envs_to_use), args.num_evals_per_job)
     ]
     total_jobs = len(args.num_candidates_list) * num_chunks
 
     if args.run_local:
-        lines.append('echo "Running classifier-guided eval jobs locally (sequential)...\"')
+        lines.append('echo "Running classifier-guided eval jobs locally (sequential)..."')
     else:
         lines.append("echo \"Submitting classifier-guided eval jobs...\"")
     lines.append(f"# num_candidates_list={args.num_candidates_list}, num_evals_per_job={args.num_evals_per_job}")
@@ -140,21 +147,50 @@ def generate_submission_script(args):
                 py_cmd += f" --default-prompt {_q(args.default_prompt)}"
 
             if args.run_local:
-                run_line = f"{all_env_vars} {args.script_runner} {_q(py_cmd)}"
+                if container_path:
+                    run_line = (
+                        f'{all_env_vars} apptainer exec --nv '
+                        f'--bind /usr/share/vulkan:/usr/share/vulkan '
+                        f'--env VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.x86_64.json '
+                        f'"$CONTAINER" '
+                        f'/bin/bash -c {_q(py_cmd)}'
+                    )
+                else:
+                    run_line = f"{all_env_vars} {args.script_runner} {_q(py_cmd)}"
                 lines.append(f'echo "Running {job_name}..."')
                 lines.append(run_line)
                 lines.append("")
             else:
                 stdout_path = os.path.join(log_dir, f"{job_name}_%j.out")
                 stderr_path = os.path.join(log_dir, f"{job_name}_%j.err")
-                sbatch_line = (
-                    f'jobid_{job_idx}=$({all_env_vars} sbatch {sbatch_common_str} '
-                    f'--job-name={_q(job_name)} '
-                    f'--comment={_q(f"classifier_guided N={num_candidates} chunk={chunk_id}")} '
-                    f'--output={_q(stdout_path)} '
-                    f'--error={_q(stderr_path)} '
-                    f'{_q(args.script_runner)} {_q(py_cmd)})'
-                )
+                if container_path:
+                    # Wrap the compute command in apptainer; sbatch runs on host
+                    # Use literal path (not $CONTAINER) because --wrap is single-quoted
+                    # and the variable won't expand on the compute node
+                    wrapped_cmd = (
+                        f'apptainer exec --nv '
+                        f'--bind /usr/share/vulkan:/usr/share/vulkan '
+                        f'--env VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.x86_64.json '
+                        f'{_q(container_path)} '
+                        f'/bin/bash -c {_q(py_cmd)}'
+                    )
+                    sbatch_line = (
+                        f'jobid_{job_idx}=$({all_env_vars} sbatch {sbatch_common_str} '
+                        f'--job-name={_q(job_name)} '
+                        f'--comment={_q(f"classifier_guided N={num_candidates} chunk={chunk_id}")} '
+                        f'--output={_q(stdout_path)} '
+                        f'--error={_q(stderr_path)} '
+                        f'--wrap={_q(wrapped_cmd)})'
+                    )
+                else:
+                    sbatch_line = (
+                        f'jobid_{job_idx}=$({all_env_vars} sbatch {sbatch_common_str} '
+                        f'--job-name={_q(job_name)} '
+                        f'--comment={_q(f"classifier_guided N={num_candidates} chunk={chunk_id}")} '
+                        f'--output={_q(stdout_path)} '
+                        f'--error={_q(stderr_path)} '
+                        f'{_q(args.script_runner)} {_q(py_cmd)})'
+                    )
                 lines.append(sbatch_line)
                 lines.append(f'echo "Submitted {job_name}: $jobid_{job_idx}"')
                 lines.append(f'job_ids+=("$jobid_{job_idx}")')
@@ -211,13 +247,20 @@ def parse_args():
         "--num-evals-per-job",
         type=int,
         default=3,
-        help="Envs per job (6 total, so 3 → 2 jobs per num_candidates). Cannot run all 6 in parallel.",
+        help="Envs per job (6 total, so 3 → 2 jobs per num_candidates). Use 1 for debug.",
+    )
+    parser.add_argument(
+        "--envs",
+        nargs="+",
+        type=str,
+        default=None,
+        help="Override envs to evaluate (default: all 6). Use e.g. DROID-BlockStackKitchen for debug.",
     )
     parser.add_argument("--rollouts", type=int, default=None)
 
     parser.add_argument("--gpu-id", type=int, default=0)
-    parser.add_argument("--server-mem-fraction", type=float, default=0.35)
-    parser.add_argument("--eval-mem-total", type=float, default=0.6)
+    parser.add_argument("--server-mem-fraction", type=float, default=0.28)
+    parser.add_argument("--eval-mem-total", type=float, default=0.65)
 
     parser.add_argument("--intermediate-base-dir", type=str, default="runs/classifier_guided_jobs")
     parser.add_argument(
@@ -231,6 +274,12 @@ def parse_args():
         type=str,
         default="scripts/run_sbatch.sh",
         help="Wrapper script for sbatch (receives py_cmd as arg). Use 'bash -c' for inline.",
+    )
+    parser.add_argument(
+        "--container",
+        type=str,
+        default=None,
+        help="Path to Apptainer/Singularity .sif container. When set, compute jobs run inside the container via 'apptainer exec --nv'.",
     )
 
     parser.add_argument("--account", type=str, default="co_rail")

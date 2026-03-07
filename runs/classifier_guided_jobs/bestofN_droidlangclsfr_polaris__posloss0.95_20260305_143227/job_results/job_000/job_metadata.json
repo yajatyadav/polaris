@@ -1,0 +1,16 @@
+{
+  "run_dir_name": "bestofN_droidlangclsfr_polaris__posloss0.95_20260305_143227",
+  "job_id": 0,
+  "timestamp": "20260305_171645",
+  "actor_config": "pi05_droid_jointpos_polaris",
+  "actor_dir": "gs://openpi-assets/checkpoints/polaris/pi05_droid_jointpos_polaris",
+  "classifier_config": "polaris_droid_language_classifier_joint_pos",
+  "classifier_dir": "checkpoints/polaris_droid_language_classifier_joint_pos/polaris_droid_jointpos_lr5e-5_ema0.99_adamw_posloss0.95_b256/9999",
+  "num_candidates": 1,
+  "envs": [
+    "DROID-BlockStackKitchen",
+    "DROID-FoodBussing",
+    "DROID-PanClean"
+  ],
+  "rollouts": 2
+}

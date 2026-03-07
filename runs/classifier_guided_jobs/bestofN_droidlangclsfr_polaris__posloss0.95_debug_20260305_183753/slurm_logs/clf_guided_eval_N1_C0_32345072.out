@@ -1,0 +1,11 @@
+first looking at local path: /global/scratch/users/yajatyadav/.cache/openpi/openpi-assets/checkpoints/polaris/pi05_droid_jointpos_polaris
+local path exists: /global/scratch/users/yajatyadav/.cache/openpi/openpi-assets/checkpoints/polaris/pi05_droid_jointpos_polaris
+╔══ Classifier-guided eval job ══
+║ Policy server : port 51293, 28% GPU mem
+║ Evals         : 1 envs, 65.0% GPU mem each
+║ Envs          : ['DROID-BlockStackKitchen']
+║ Output        : runs/classifier_guided_jobs/bestofN_droidlangclsfr_polaris__posloss0.95_debug_20260305_183753/job_results/job_000
+╚══════════════════════════════
+
+Starting policy server...
+Waiting for server on 0.0.0.0:51293 (timeout 600.0s)...

@@ -95,7 +95,7 @@ class ClassifierGuidedJobArgs:
     classifier_dir: str
     num_candidates: int = 64
     default_prompt: str | None = None
-    server_mem_fraction: float = 0.35
+    server_mem_fraction: float = 0.28  # PhysX needs GPU for PhysicsScene; 0.28 leaves ~70% for eval+PhysX
 
     # --- Eval (scripts/eval.py) ---
     client: str = "DroidJointPos"
@@ -117,17 +117,18 @@ class ClassifierGuidedJobArgs:
 
     # --- GPU & resource ---
     gpu_id: int = 0
-    eval_mem_total: float = 0.6  # Total GPU fraction for all evals (split equally)
+    eval_mem_total: float = 0.65  # Total GPU fraction for evals; PhysX PhysicsScene needs substantial GPU mem
 
     # --- Control ---
     dry_run: bool = False
-    server_ready_timeout: float = 120.0
+    server_ready_timeout: float = 600.0  # Policy server can take 5+ min to load models in cold start
+    sequential_evals: bool = True  # Run evals one at a time; parallel evals cause "no physics scene" on shared GPU
 
 
 def main() -> None:
     args = tyro.cli(ClassifierGuidedJobArgs)
     port = _find_free_port()
-    host = "127.0.0.1"
+    host = "0.0.0.0"
 
     # Build EvalArgs for each env
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -168,7 +169,8 @@ def main() -> None:
         )
 
     num_evals = len(eval_jobs)
-    eval_mem_each = args.eval_mem_total / num_evals if num_evals > 0 else 0
+    # When sequential: each eval gets full eval_mem_total (no parallel Isaac Sim on same GPU)
+    eval_mem_each = args.eval_mem_total if args.sequential_evals else (args.eval_mem_total / num_evals if num_evals > 0 else 0)
 
     # All paths relative to polaris root (assume cwd is polaris when running)
     openpi_dir = "third_party/openpi"
@@ -239,49 +241,49 @@ def main() -> None:
         }
         (job_output_root / "job_metadata.json").write_text(json.dumps(metadata, indent=2))
 
-    # Start policy server
+    # Start policy server (no PIPE so stdout/stderr stream to terminal in real time)
     print("Starting policy server...")
     server_proc = subprocess.Popen(
         server_cmd,
         cwd=openpi_dir,
         env=server_env,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
     )
 
     try:
         print(f"Waiting for server on {host}:{port} (timeout {args.server_ready_timeout}s)...")
         if not _wait_for_server(host, port, timeout_sec=args.server_ready_timeout):
+            server_proc.terminate()
+            try:
+                server_proc.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                server_proc.kill()
             raise RuntimeError("Policy server did not become ready in time")
 
-        print("Server ready. Launching eval processes...")
+        mode = "sequential" if args.sequential_evals else "parallel"
+        print(f"Server ready. Launching eval processes ({mode})...")
 
+        polaris_root = Path(__file__).resolve().parent.parent
         eval_env = {
             **os.environ,
             "CUDA_VISIBLE_DEVICES": str(args.gpu_id),
             "POLARIS_CUDA_MEMORY_FRACTION": str(eval_mem_each),
         }
 
-        procs: list[tuple[str, subprocess.Popen]] = []
+        failures: list[str] = []
         for job in eval_jobs:
             cli = _eval_args_to_cli(job)
             cmd = ["uv", "run", "python", eval_script] + cli
             p = subprocess.Popen(
                 cmd,
+                cwd=polaris_root,
                 env=eval_env,
             )
-            procs.append((job.environment, p))
-
-        # Wait for all evals
-        failures: list[str] = []
-        for env_name, p in procs:
             p.wait()
             if p.returncode != 0:
-                failures.append(env_name)
-                print(f"  [{env_name}] FAILED (exit {p.returncode})")
+                failures.append(job.environment)
+                print(f"  [{job.environment}] FAILED (exit {p.returncode})")
             else:
-                print(f"  [{env_name}] DONE")
+                print(f"  [{job.environment}] DONE")
 
     finally:
         server_proc.terminate()
