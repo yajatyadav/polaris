@@ -1,0 +1,135 @@
+warning: The `tool.uv.dev-dependencies` field (used in `third_party/openpi/packages/openpi-client/pyproject.toml`) is deprecated and will be removed in a future release; use `dependency-groups.dev` instead
+Loading user config located at: '/home/yajatyadav/multitask_reinforcement_learning/polaris/.venv/lib/python3.11/site-packages/isaacsim/kit/data/Kit/Isaac-Sim/5.1/user.config.json'
+[Info] [carb] Logging to file: /home/yajatyadav/multitask_reinforcement_learning/polaris/.venv/lib/python3.11/site-packages/isaacsim/kit/logs/Kit/Isaac-Sim/5.1/kit_20260306_160405.log
+2026-03-07T00:04:05Z [162ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-03-07T00:04:05Z [162ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-03-07T00:04:05Z [252ms] [Warning] [omni.platforminfo.plugin] failed to open the default display.  Can't verify X Server version.
+2026-03-07T00:04:05Z [259ms] [Warning] [carb.cudainterop.plugin] CUDA_VISIBLE_DEVICES environment variable is set.
+2026-03-07T00:04:05Z [259ms] [Warning] [carb.cudainterop.plugin] Note CUDA device enumeration and Omniverse device enumeration are different.
+2026-03-07T00:04:05Z [259ms] [Warning] [carb.cudainterop.plugin] Setting CUDA_VISIBLE_DEVICES can lead to undesired behavior or crashes.
+2026-03-07T00:04:06Z [978ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-03-07T00:04:06Z [978ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-03-07T00:04:07Z [1,343ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,343ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,344ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,344ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,344ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,344ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,345ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,345ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,346ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,346ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,347ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,347ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Skipping NVIDIA GPU due CUDA being in bad state: NVIDIA H100 80GB HBM3
+2026-03-07T00:04:07Z [1,349ms] [Warning] [gpu.foundation.plugin] Please restart your system if CUDA is known to work in your system.
+
+|---------------------------------------------------------------------------------------------|
+| Driver Version: 580.95.05     | Graphics API: Vulkan
+|=============================================================================================|
+| GPU | Name                             | Active | LDA | GPU Memory | Vendor-ID | LUID       |
+|     |                                  |        |     |            | Device-ID | UUID       |
+|     |                                  |        |     |            | Bus-ID    |            |
+|---------------------------------------------------------------------------------------------|
+| 0   | NVIDIA H100 80GB HBM3            |        |     | 81559   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2330      | dbf5158f.. |
+|     |                                  |        |     |            | 1b        |            |
+|---------------------------------------------------------------------------------------------|
+| 1   | NVIDIA H100 80GB HBM3            |        |     | 81559   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2330      | 4ee2b9d1.. |
+|     |                                  |        |     |            | 43        |            |
+|---------------------------------------------------------------------------------------------|
+| 2   | NVIDIA H100 80GB HBM3            |        |     | 81559   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2330      | 8b761e78.. |
+|     |                                  |        |     |            | 52        |            |
+|---------------------------------------------------------------------------------------------|
+| 3   | NVIDIA H100 80GB HBM3            |        |     | 81559   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2330      | 7686639b.. |
+|     |                                  |        |     |            | 61        |            |
+|---------------------------------------------------------------------------------------------|
+| 4   | NVIDIA H100 80GB HBM3            |        |     | 81559   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2330      | d02bde7b.. |
+|     |                                  |        |     |            | 9d        |            |
+|---------------------------------------------------------------------------------------------|
+| 5   | NVIDIA H100 80GB HBM3            |        |     | 81559   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2330      | 6277ea48.. |
+|     |                                  |        |     |            | c3        |            |
+|---------------------------------------------------------------------------------------------|
+| 6   | NVIDIA H100 80GB HBM3            | Yes: 0 |     | 81559   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2330      | e5513440.. |
+|     |                                  |        |     |            | d1        |            |
+|---------------------------------------------------------------------------------------------|
+| 7   | NVIDIA H100 80GB HBM3            |        |     | 81559   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2330      | 648db1ce.. |
+|     |                                  |        |     |            | df        |            |
+|=============================================================================================|
+| OS: 22.04.2 LTS (Jammy Jellyfish) ubuntu, Version: 22.04.2, Kernel: 5.15.0-1093-nvidia
+| Processor: Intel(R) Xeon(R) Platinum 8480C
+| Cores: 112 | Logical Cores: 224
+|---------------------------------------------------------------------------------------------|
+| Total Memory (MB): 2063936 | Free Memory: 2026141
+| Total Page/Swap (MB): 0 | Free Page/Swap: 0
+|---------------------------------------------------------------------------------------------|
+2026-03-07T00:04:07Z [1,972ms] [Warning] [gpu.foundation.plugin] ECC is enabled on physical device 6
+2026-03-07T00:04:08Z [2,857ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-03-07T00:04:08Z [2,857ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-03-07T00:04:08Z [2,876ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-03-07T00:04:08Z [2,876ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-03-07T00:04:08Z [2,886ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-03-07T00:04:08Z [2,886ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-03-07T00:04:08Z [2,902ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-03-07T00:04:08Z [2,902ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-03-07T00:04:08Z [2,904ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-03-07T00:04:08Z [2,904ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-03-07T00:04:08Z [2,905ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-03-07T00:04:08Z [2,905ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-03-07T00:04:08Z [3,095ms] [Warning] [omni.log] Source: omni.hydra was already registered.
+2026-03-07T00:04:09Z [3,368ms] [Warning] [carb] Acquiring non optional plugin interface which is not listed as dependency: [omni::physx::IPhysxBenchmarks v1.0] (plugin: <default plugin>), by client: omni.physics.physx.plugin. Add it to CARB_PLUGIN_IMPL_DEPS() macro of a client.
+2026-03-07T00:04:09Z [3,380ms] [Warning] [omni.isaac.dynamic_control] omni.isaac.dynamic_control is deprecated as of Isaac Sim 4.5. No action is needed from end-users.
+2026-03-07T00:04:09Z [3,916ms] [Warning] [pxr.Semantics] pxr.Semantics is deprecated - please use Semantics instead
+2026-03-07T00:04:09Z [4,025ms] [Warning] [omni.graph.core.plugin] Found duplicate of category 'Replicator' - was 'Annotators', adding 'Fabric Reader'
+2026-03-07T00:04:09Z [4,025ms] [Warning] [omni.graph.core.plugin] Category 'Replicator' not accepted on node type 'omni.replicator.core.FabricReader' in extension 'omni.replicator.core'
+=== Debug env: DROID-BlockStackKitchen ===
+GPU: 0, Headless: True, Steps: 50
+
+CUDA available: True
+  CUDA device 0: NVIDIA H100 80GB HBM3
+  CUDA version: 13.0
+
+Launching Isaac Sim app...
+[INFO][AppLauncher]: Using device: cuda:0
+[INFO][AppLauncher]: Loading experience file: /home/yajatyadav/multitask_reinforcement_learning/polaris/.venv/lib/python3.11/site-packages/isaaclab/apps/isaaclab.python.headless.rendering.kit
+App launched in 9.1s
+
+2026-03-07T00:04:09Z [4,026ms] [Warning] [omni.replicator.core.scripts.extension] No material configuration file, adding configuration to material settings directly.
+2026-03-07T00:04:12Z [6,599ms] [Warning] [carb.graphics-vulkan.plugin] NGX DLSS Frame Generation Feature AdapterUnsupported
+2026-03-07T00:04:14Z [8,420ms] [Warning] [omni.fabric.plugin] Warning: attribute viewPickingId not found for bucket id 7
+
+2026-03-07T00:04:14Z [8,502ms] [Warning] [rtx.postprocessing.plugin] DLSS-RR is not supported in the current build due to some known bugs with this GPU: NVIDIA H100 80GB HBM3.Note that RTX Real-Time raytracing mode will not be able to denoise the output correctly.
+2026-03-07T00:04:15Z [10,168ms] [Warning] [omni.usd] Warning: in _ReportErrors at line 3172 of /builds/omniverse/usd-ci/USD/pxr/usd/usd/stage.cpp -- In </World/external_cam/OmniverseKitViewportCameraMesh>: Could not open asset @/home/yajatyadav/multitask_reinforcement_learning/.venv/lib/python3.10/site-packages/omni/resources/models/camera/camera.usdz@ for reference introduced by @/home/yajatyadav/multitask_reinforcement_learning/polaris/PolaRiS-Hub/block_stack_kitchen/scene.usda@</World/external_cam/OmniverseKitViewportCameraMesh>. (instantiating stage on stage @/home/yajatyadav/multitask_reinforcement_learning/polaris/PolaRiS-Hub/block_stack_kitchen/scene.usda@ <0x55aca0588d50>)
+
+2026-03-07T00:04:15Z [10,184ms] [Warning] [isaaclab.envs.manager_based_env] Seed not set for the environment. The environment creation may not be deterministic.
+2026-03-07T00:04:16Z [10,533ms] [Warning] [omni.usd] Warning: in _ReportErrors at line 3172 of /builds/omniverse/usd-ci/USD/pxr/usd/usd/stage.cpp -- In </World/envs/env_0/scene/external_cam/OmniverseKitViewportCameraMesh>: Could not open asset @/home/yajatyadav/multitask_reinforcement_learning/.venv/lib/python3.10/site-packages/omni/resources/models/camera/camera.usdz@ for reference introduced by @/home/yajatyadav/multitask_reinforcement_learning/polaris/PolaRiS-Hub/block_stack_kitchen/scene.usda@</World/external_cam/OmniverseKitViewportCameraMesh>. (recomposing stage on stage @anon:0x55aca01466a0:World0.usd@ <0x55aca61ace70>)
+
+2026-03-07T00:04:17Z [11,567ms] [Warning] [isaaclab.actuators.actuator_pd] The <ImplicitActuatorCfg> object has a value for 'effort_limit'. This parameter will be removed in the future. To set the effort limit, please use 'effort_limit_sim' instead.
+2026-03-07T00:04:17Z [11,567ms] [Warning] [isaaclab.actuators.actuator_pd] The <ImplicitActuatorCfg> object has a value for 'velocity_limit'. Previously, although this value was specified, it was not getting used by implicit actuators. Since this parameter affects the simulation behavior, we continue to not use it. This parameter will be removed in the future. To set the velocity limit, please use 'velocity_limit_sim' instead.
+2026-03-07T00:04:17Z [11,612ms] [Warning] [isaaclab.actuators.actuator_pd] The <ImplicitActuatorCfg> object has a value for 'effort_limit'. This parameter will be removed in the future. To set the effort limit, please use 'effort_limit_sim' instead.
+2026-03-07T00:04:17Z [11,612ms] [Warning] [isaaclab.actuators.actuator_pd] The <ImplicitActuatorCfg> object has a value for 'velocity_limit'. Previously, although this value was specified, it was not getting used by implicit actuators. Since this parameter affects the simulation behavior, we continue to not use it. This parameter will be removed in the future. To set the velocity limit, please use 'velocity_limit_sim' instead.
+2026-03-07T00:04:17Z [11,615ms] [Warning] [isaaclab.actuators.actuator_pd] The <ImplicitActuatorCfg> object has a value for 'effort_limit'. This parameter will be removed in the future. To set the effort limit, please use 'effort_limit_sim' instead.
+2026-03-07T00:04:17Z [11,615ms] [Warning] [isaaclab.actuators.actuator_pd] The <ImplicitActuatorCfg> object has a value for 'velocity_limit'. Previously, although this value was specified, it was not getting used by implicit actuators. Since this parameter affects the simulation behavior, we continue to not use it. This parameter will be removed in the future. To set the velocity limit, please use 'velocity_limit_sim' instead.
+2026-03-07T00:04:17Z [11,617ms] [Warning] [isaaclab.assets.articulation.articulation] Not all actuators are configured! Total number of actuated joints not equal to number of joints available: 8 != 13.
+2026-03-07T00:04:36Z [30,387ms] [Warning] [carb] Client gpu.foundation.plugin has acquired [gpu::unstable::IMemoryBudgetManagerFactory v0.1] 100 times. Consider accessing this interface with carb::getCachedInterface() (Performance warning)

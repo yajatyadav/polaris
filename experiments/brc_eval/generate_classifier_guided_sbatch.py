@@ -142,16 +142,7 @@ def generate_submission_script(args):
                 py_cmd += f" --default-prompt {_q(args.default_prompt)}"
 
             if args.run_local:
-                if container_path:
-                    run_line = (
-                        f'{all_env_vars} apptainer exec --nv '
-                        f'--bind /usr/share/vulkan:/usr/share/vulkan '
-                        f'--env VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.x86_64.json '
-                        f'"$CONTAINER" '
-                        f'/bin/bash -c {_q(py_cmd)}'
-                    )
-                else:
-                    run_line = f"{all_env_vars} {args.script_runner} {_q(py_cmd)}"
+                run_line = f"{all_env_vars} {py_cmd}"
                 lines.append(f'echo "Running {job_name}..."')
                 lines.append(run_line)
                 lines.append("")
@@ -238,7 +229,7 @@ def parse_args():
     parser.add_argument(
         "--num-evals-per-job",
         type=int,
-        default=3,
+        default=2,
         help="Envs per job (6 total, so 3 -> 2 jobs per num_candidates). Use 1 for debug.",
     )
     parser.add_argument(
