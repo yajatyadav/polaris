@@ -1,21 +1,19 @@
 """
 Generate SLURM submission script for classifier-guided policy evaluation.
 
-Creates a run directory with unique timestamp, generates sbatch calls for each job,
-and writes submission script + log paths. Per-job outputs go to the intermediate dir;
-postprocess aggregates and writes final results.
+The policy server runs on a separate machine — this script generates eval jobs
+that query it via --host/--port. Each job runs num_evals_per_job envs in parallel
+for a specific num_candidates value.
 
 Jobs are generated as a grid: (num_candidates, env_chunk). All 6 polaris envs are
-split into chunks of size num_evals_per_job (e.g. 3 envs per job → 2 chunks).
+split into chunks of size num_evals_per_job (e.g. 3 envs per job -> 2 chunks).
 Total jobs = len(num_candidates_list) * ceil(6 / num_evals_per_job).
 
 Usage:
-    uv run python experiments/classifier_guided_eval/generate_classifier_guided_sbatch.py \\
-        --run-name my_classifier_eval \\
-        --actor-config pi05_droid_jointpos_polaris \\
-        --actor-dir gs://openpi-assets/checkpoints/polaris/pi05_droid_jointpos_polaris \\
-        --classifier-config polaris_droid_language_classifier_joint_pos \\
-        --classifier-dir checkpoints/.../2000 \\
+    uv run python experiments/brc_eval/generate_classifier_guided_sbatch.py \\
+        --run-name my_eval \\
+
+        --host 10.0.0.1 --port 8000 \\
         --num-candidates-list 32 64 128 \\
         --num-evals-per-job 3 \\
         --rollouts 5
@@ -127,17 +125,14 @@ def generate_submission_script(args):
             py_cmd_parts = [
                 "uv run python",
                 worker_script_rel,
-                f"--actor-config {_q(args.actor_config)}",
-                f"--actor-dir {_q(args.actor_dir)}",
-                f"--classifier-config {_q(args.classifier_config)}",
-                f"--classifier-dir {_q(args.classifier_dir)}",
+                f"--host {_q(args.host)}",
+                f"--port {args.port}",
                 f"--num-candidates {num_candidates}",
                 f"--run-dir-name {_q(run_dir_name)}",
                 f"--job-id {job_idx}",
                 f"--intermediate-base-dir {_q(args.intermediate_base_dir)}",
                 f"--envs {envs_str}",
                 f"--gpu-id {args.gpu_id}",
-                f"--server-mem-fraction {args.server_mem_fraction}",
                 f"--eval-mem-total {args.eval_mem_total}",
             ]
             py_cmd = " ".join(py_cmd_parts)
@@ -164,9 +159,6 @@ def generate_submission_script(args):
                 stdout_path = os.path.join(log_dir, f"{job_name}_%j.out")
                 stderr_path = os.path.join(log_dir, f"{job_name}_%j.err")
                 if container_path:
-                    # Wrap the compute command in apptainer; sbatch runs on host
-                    # Use literal path (not $CONTAINER) because --wrap is single-quoted
-                    # and the variable won't expand on the compute node
                     wrapped_cmd = (
                         f'apptainer exec --nv '
                         f'--bind /usr/share/vulkan:/usr/share/vulkan '
@@ -230,10 +222,10 @@ def parse_args():
     parser.add_argument("--run-name", type=str, required=True)
     parser.add_argument("--run-id", type=str, default="")
 
-    parser.add_argument("--actor-config", type=str, required=True)
-    parser.add_argument("--actor-dir", type=str, required=True)
-    parser.add_argument("--classifier-config", type=str, required=True)
-    parser.add_argument("--classifier-dir", type=str, required=True)
+    # Remote policy server
+    parser.add_argument("--host", type=str, required=True, help="Policy server host")
+    parser.add_argument("--port", type=int, required=True, help="Policy server port")
+
     parser.add_argument(
         "--num-candidates-list",
         nargs="+",
@@ -247,19 +239,18 @@ def parse_args():
         "--num-evals-per-job",
         type=int,
         default=3,
-        help="Envs per job (6 total, so 3 → 2 jobs per num_candidates). Use 1 for debug.",
+        help="Envs per job (6 total, so 3 -> 2 jobs per num_candidates). Use 1 for debug.",
     )
     parser.add_argument(
         "--envs",
         nargs="+",
         type=str,
         default=None,
-        help="Override envs to evaluate (default: all 6). Use e.g. DROID-BlockStackKitchen for debug.",
+        help="Override envs to evaluate (default: all 6).",
     )
     parser.add_argument("--rollouts", type=int, default=None)
 
     parser.add_argument("--gpu-id", type=int, default=0)
-    parser.add_argument("--server-mem-fraction", type=float, default=0.28)
     parser.add_argument("--eval-mem-total", type=float, default=0.65)
 
     parser.add_argument("--intermediate-base-dir", type=str, default="runs/classifier_guided_jobs")
@@ -267,7 +258,7 @@ def parse_args():
         "--run-local",
         action="store_true",
         default=False,
-        help="Generate script for local run (no sbatch). Jobs run sequentially via scripts/run_sbatch.sh.",
+        help="Generate script for local run (no sbatch). Jobs run sequentially.",
     )
     parser.add_argument(
         "--script-runner",
@@ -278,8 +269,8 @@ def parse_args():
     parser.add_argument(
         "--container",
         type=str,
-        default=None,
-        help="Path to Apptainer/Singularity .sif container. When set, compute jobs run inside the container via 'apptainer exec --nv'.",
+        default='/global/scratch/users/yajatyadav/research/multitask_reinforcement_learning/polaris/polaris.sif',
+        help="Path to Apptainer/Singularity .sif container.",
     )
 
     parser.add_argument("--account", type=str, default="co_rail")

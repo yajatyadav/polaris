@@ -40,6 +40,7 @@ class PolicyArgs:
     host: str = "0.0.0.0"
     port: int = 8000
     open_loop_horizon: int | None = 8
+    num_candidates: int | None = None  # Number of candidates for best-of-N; must be set explicitly
 
 
 @dataclass

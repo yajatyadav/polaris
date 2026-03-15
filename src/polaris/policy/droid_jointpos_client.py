@@ -17,6 +17,7 @@ class DroidJointPosClient(InferenceClient):
         self.actions_from_chunk_completed = 0
         self.pred_action_chunk = None
         self.open_loop_horizon = args.open_loop_horizon
+        self.num_candidates = args.num_candidates
 
     @property
     def rerender(self) -> bool:
@@ -65,6 +66,8 @@ class DroidJointPosClient(InferenceClient):
                 "observation/gripper_position": curr_obs["gripper_position"],
                 "prompt": instruction,
             }
+            if self.num_candidates is not None:
+                request_data["num_candidates"] = self.num_candidates
             server_response = self.client.infer(request_data)
             self.pred_action_chunk = server_response["actions"]
             both = np.concatenate([exterior_image, wrist_image], axis=1)

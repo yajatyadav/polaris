@@ -1,0 +1,21 @@
+Bootstrap: docker
+From: nvidia/cuda:12.1.0-devel-ubuntu22.04
+
+%post
+    mkdir -p /tmp /var/tmp
+    apt-get update && apt-get install -y \
+        curl git ca-certificates \
+        linux-headers-generic linux-libc-dev \
+        build-essential python3-dev \
+        libxt6 libglu1-mesa libglvnd-dev libgl1-mesa-glx \
+        libxrandr2 libxinerama1 libxcursor1 libxi6 \
+        vulkan-tools libvulkan1 \
+        zenity
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    mv /root/.local/bin/uv /usr/local/bin/uv
+    mv /root/.local/bin/uvx /usr/local/bin/uvx
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export PATH=/usr/local/cuda/bin:/usr/local/bin:$PATH
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH

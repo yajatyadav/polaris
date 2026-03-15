@@ -3,6 +3,8 @@ data/
 *.mp4
 PolaRiS-Hub/
 PolaRiS-datasets/
+runs/
+*.sif
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

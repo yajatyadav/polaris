@@ -1,0 +1,4 @@
+Generated: runs/classifier_guided_jobs/bestofN_droidlangclsfr_polaris__posloss0.95_20260305_144444/submit_classifier_guided_20260305_144444.sh
+Run ID: c112ee713f983baf
+Intermediate run directory: runs/classifier_guided_jobs/bestofN_droidlangclsfr_polaris__posloss0.95_20260305_144444
+Submit with: bash runs/classifier_guided_jobs/bestofN_droidlangclsfr_polaris__posloss0.95_20260305_144444/submit_classifier_guided_20260305_144444.sh
