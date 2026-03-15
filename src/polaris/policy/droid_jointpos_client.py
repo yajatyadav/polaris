@@ -4,6 +4,10 @@ from polaris.policy.abstract_client import InferenceClient, PolicyArgs
 
 
 # Joint Position Client for DROID
+"""
+This client was modified to also hold a self.num_candidates attribute. Everything is same, just the policy-server call is now .infer(obs, num_candidates=self.num_candidates)
+The policy server handles sampling multiple candidates and returning the best one to this inferenceclient.
+"""
 @InferenceClient.register(client_name="DroidJointPos")
 class DroidJointPosClient(InferenceClient):
     def __init__(self, args: PolicyArgs) -> None:

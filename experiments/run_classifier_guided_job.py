@@ -22,6 +22,8 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import sys
+import threading
 import time
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -196,11 +198,30 @@ def main() -> None:
 
     # Launch all evals in parallel
     print(f"Launching {num_evals} eval processes in parallel...")
+
+    def _prefix_stream(stream, prefix: str, dest):
+        """Read lines from stream and write them to dest with a prefix."""
+        for line in stream:
+            dest.write(f"{prefix} {line}")
+            dest.flush()
+        stream.close()
+
     procs: list[tuple[str, subprocess.Popen]] = []
-    for job in eval_jobs:
+    threads: list[threading.Thread] = []
+    for i, job in enumerate(eval_jobs):
         cli = _eval_args_to_cli(job)
-        cmd = ["uv", "run", "python", eval_script] + cli
-        p = subprocess.Popen(cmd, cwd=polaris_root, env=eval_env)
+        cmd = ["uv", "run", "python", "-u", eval_script] + cli
+        p = subprocess.Popen(
+            cmd, cwd=polaris_root, env=eval_env,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            text=True, bufsize=1,
+        )
+        prefix = f"[{i}]"
+        t_out = threading.Thread(target=_prefix_stream, args=(p.stdout, prefix, sys.stdout), daemon=True)
+        t_err = threading.Thread(target=_prefix_stream, args=(p.stderr, prefix, sys.stderr), daemon=True)
+        t_out.start()
+        t_err.start()
+        threads.extend([t_out, t_err])
         procs.append((job.environment, p))
 
     # Wait for all
@@ -212,6 +233,8 @@ def main() -> None:
             print(f"  [{env_name}] FAILED (exit {p.returncode})")
         else:
             print(f"  [{env_name}] DONE")
+    for t in threads:
+        t.join(timeout=5)
 
     print()
     print(f"=== Job complete: {num_evals - len(failures)}/{num_evals} evals succeeded ===")

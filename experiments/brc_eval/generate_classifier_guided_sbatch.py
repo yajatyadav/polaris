@@ -248,10 +248,10 @@ def parse_args():
         default=None,
         help="Override envs to evaluate (default: all 6).",
     )
-    parser.add_argument("--rollouts", type=int, default=None)
+    parser.add_argument("--rollouts", type=int, default=50)
 
     parser.add_argument("--gpu-id", type=int, default=0)
-    parser.add_argument("--eval-mem-total", type=float, default=0.65)
+    parser.add_argument("--eval-mem-total", type=float, default=0.9)
 
     parser.add_argument("--intermediate-base-dir", type=str, default="runs/classifier_guided_jobs")
     parser.add_argument(
