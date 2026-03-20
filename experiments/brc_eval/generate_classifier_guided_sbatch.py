@@ -93,6 +93,7 @@ def generate_submission_script(args):
     system_env_vars = [
         "XLA_PYTHON_CLIENT_PREALLOCATE=false",
         "OMP_NUM_THREADS=1",
+        "VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json",
     ]
     all_env_vars = " ".join(system_env_vars)
 

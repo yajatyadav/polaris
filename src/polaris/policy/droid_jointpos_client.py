@@ -1,4 +1,5 @@
 import csv
+import json
 import os
 import time
 
@@ -134,13 +135,13 @@ class DroidJointPosClient(InferenceClient):
 
     @staticmethod
     def _format_value(v):
-        """Convert a value to a CSV-friendly string."""
+        """Convert a value to a CSV-friendly string (JSON for complex types)."""
         if v is None:
             return ""
         if isinstance(v, np.ndarray):
-            return v.tolist()
-        if isinstance(v, dict):
-            return str(v)
+            return json.dumps(v.tolist())
+        if isinstance(v, (dict, list, tuple)):
+            return json.dumps(v, default=str)
         return v
 
     def _log_classifier_metrics(self, server_response: dict):
@@ -151,8 +152,7 @@ class DroidJointPosClient(InferenceClient):
         if self._csv_file is None or self._infer_call % self._log_every_n_infers != 1:
             return
         try:
-            # Skip "actions" since it's large and already consumed
-            response_keys = sorted(k for k in server_response if k != "actions")
+            response_keys = sorted(server_response.keys())
 
             # Write header on first logged row (deferred so we know the keys)
             if self._csv_headers is None:
