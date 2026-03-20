@@ -41,6 +41,8 @@ class PolicyArgs:
     port: int = 8000
     open_loop_horizon: int | None = 8
     num_candidates: int | None = None  # Number of candidates for best-of-N; must be set explicitly
+    log_dir: str | None = None  # Directory for logging classifier metrics (set at runtime by eval.py)
+    log_interval: int = 24  # Log classifier metrics every N env steps (must be divisible by open_loop_horizon)
 
 
 @dataclass

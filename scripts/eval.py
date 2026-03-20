@@ -80,7 +80,19 @@ def main(eval_args: EvalArgs):
         simulation_app.close()
         return
 
-    policy_client: InferenceClient = InferenceClient.get_client(eval_args.policy)
+    # Tell the policy client where to log classifier metrics
+    eval_args.policy.log_dir = str(run_folder)
+
+    import time as _time
+    for _attempt in range(10):
+        try:
+            policy_client: InferenceClient = InferenceClient.get_client(eval_args.policy)
+            break
+        except TimeoutError:
+            print(f"Policy server connection timed out (attempt {_attempt + 1}/10), retrying in 10s...")
+            _time.sleep(10)
+    else:
+        raise TimeoutError("Failed to connect to policy server after 30 attempts")
 
     video = []
     horizon = env.max_episode_length
@@ -91,12 +103,27 @@ def main(eval_args: EvalArgs):
     policy_client.reset()
     print(f" >>> Starting eval job from episode {episode + 1} of {rollouts} <<< ")
     while True:
-        action, viz = policy_client.infer(obs, language_instruction)
-        if viz is not None:
-            video.append(viz)
-        obs, rew, term, trunc, info = env.step(
-            torch.tensor(action).reshape(1, -1), expensive=policy_client.rerender
-        )
+        try:
+            action, viz = policy_client.infer(obs, language_instruction)
+            if viz is not None:
+                video.append(viz)
+            obs, rew, term, trunc, info = env.step(
+                torch.tensor(action).reshape(1, -1), expensive=policy_client.rerender
+            )
+        except torch._C._LinAlgError as e:
+            print(f"Singular matrix error during episode {episode}, restarting rollout: {e}")
+            # Delete partial classifier metrics CSV before reset increments rollout index
+            partial_csv = run_folder / f"classifier_metrics_{policy_client._rollout_idx}.csv"
+            if partial_csv.exists():
+                partial_csv.unlink()
+            bar.close()
+            bar = tqdm.tqdm(range(horizon))
+            video = []
+            policy_client.reset()
+            obs, info = env.reset(
+                object_positions=initial_conditions[episode % len(initial_conditions)]
+            )
+            continue
 
         bar.update(1)
         if term[0] or trunc[0] or bar.n >= horizon:

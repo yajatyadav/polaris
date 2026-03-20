@@ -13,7 +13,7 @@ Usage:
     uv run python experiments/brc_eval/generate_classifier_guided_sbatch.py \\
         --run-name my_eval \\
 
-        --host 10.0.0.1 --port 8000 \\
+        --host 10.0.0.1 --ports 8000 8001 8002 \\
         --num-candidates-list 32 64 128 \\
         --num-evals-per-job 3 \\
         --rollouts 5
@@ -126,7 +126,7 @@ def generate_submission_script(args):
                 "uv run python",
                 worker_script_rel,
                 f"--host {_q(args.host)}",
-                f"--port {args.port}",
+                f"--port {args.ports[job_idx % len(args.ports)]}",
                 f"--num-candidates {num_candidates}",
                 f"--run-dir-name {_q(run_dir_name)}",
                 f"--job-id {job_idx}",
@@ -149,8 +149,10 @@ def generate_submission_script(args):
             else:
                 stdout_path = os.path.join(log_dir, f"{job_name}_%j.out")
                 stderr_path = os.path.join(log_dir, f"{job_name}_%j.err")
+                job_header = 'echo "SLURM_JOB_ID=$SLURM_JOB_ID"'
                 if container_path:
                     wrapped_cmd = (
+                        f'{job_header} && '
                         f'apptainer exec --nv '
                         f'--bind /usr/share/vulkan:/usr/share/vulkan '
                         f'--env VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.x86_64.json '
@@ -172,7 +174,7 @@ def generate_submission_script(args):
                         f'--comment={_q(f"classifier_guided N={num_candidates} chunk={chunk_id}")} '
                         f'--output={_q(stdout_path)} '
                         f'--error={_q(stderr_path)} '
-                        f'{_q(args.script_runner)} {_q(py_cmd)})'
+                        f'--wrap={_q(job_header + " && " + py_cmd)})'
                     )
                 lines.append(sbatch_line)
                 lines.append(f'echo "Submitted {job_name}: $jobid_{job_idx}"')
@@ -215,7 +217,7 @@ def parse_args():
 
     # Remote policy server
     parser.add_argument("--host", type=str, required=True, help="Policy server host")
-    parser.add_argument("--port", type=int, required=True, help="Policy server port")
+    parser.add_argument("--ports", nargs="+", type=int, required=True, help="Policy server port(s). Jobs are round-robin distributed across ports.")
 
     parser.add_argument(
         "--num-candidates-list",
